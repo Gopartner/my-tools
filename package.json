@@ -1,0 +1,13 @@
+{
+  "name": "my-tools",
+  "version": "1.0.0",
+  "description": "belajar membuat command line tools",
+  "main": "index.js",
+  "scripts": {
+    "finish": "git add . && git commit -m \"komit dengan npm finish\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
