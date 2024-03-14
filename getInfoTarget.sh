@@ -1,12 +1,22 @@
 #!/bin/bash
 
-# Mendapatkan alamat IP perangkat kedua
-target_ip=$(ip addr show wlan0 | awk '/inet / {print $2}' | cut -d '/' -f 1)
+# Menampilkan alamat IP perangkat 2
+get_ip_address() {
+    ifconfig | grep -E 'inet.*eth0' | awk '{print $2}' | cut -d':' -f2
+}
 
-# Mendapatkan nama pengguna perangkat kedua
-target_user=$(whoami)
+# Menampilkan username perangkat 2
+get_username() {
+    whoami
+}
 
-echo "Informasi untuk perangkat:"
-echo "Alamat IP perangkat: $target_ip"
-echo "Username perangkat: $target_user"
+# Menampilkan informasi yang dibutuhkan
+main() {
+    echo "Informasi untuk perangkat 1:"
+    echo "Alamat IP perangkat 2: $(get_ip_address)"
+    echo "Username perangkat 2: $(get_username)"
+}
+
+# Memanggil fungsi utama
+main
 

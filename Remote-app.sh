@@ -6,7 +6,7 @@ check_and_install_dependencies() {
     for package in "${dependencies[@]}"; do
         if ! dpkg -l | grep -q $package; then
             echo "Memerlukan paket: $package"
-            apt-get install -y $package
+            sudo apt-get install -y $package
         fi
     done
 }
