@@ -13,6 +13,7 @@ get_username() {
 # Menampilkan informasi yang dibutuhkan
 main() {
     echo "Informasi untuk perangkat 1:"
+    echo "==========================="
     echo "Alamat IP perangkat 2: $(get_ip_address)"
     echo "Username perangkat 2: $(get_username)"
 }
