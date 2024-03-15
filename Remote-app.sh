@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Default path untuk perangkat 1 dan perangkat 2
+DEFAULT_REMOTE_PATH="/home"
+DEFAULT_LOCAL_PATH="$HOME/remote_mount"
+
 # Fungsi untuk memeriksa dan menginstal paket yang dibutuhkan
 check_and_install_dependencies() {
     local dependencies=("sshfs" "inotify-tools")
@@ -27,9 +31,27 @@ perform_automatic_setup() {
 
 # Fungsi untuk mount folder perangkat 2
 mount_remote_folder() {
-    read -p "Masukkan path folder dari perangkat 2: " remote_folder
-    read -p "Masukkan path folder lokal untuk mount: " local_mount_point
+    read -p "Masukkan path folder dari perangkat 2 (default: $DEFAULT_REMOTE_PATH): " remote_folder
+    remote_folder="${remote_folder:-$DEFAULT_REMOTE_PATH}"  # Gunakan default jika input kosong
+    read -p "Masukkan path folder lokal untuk mount (default: $DEFAULT_LOCAL_PATH): " local_mount_point
+    local_mount_point="${local_mount_point:-$DEFAULT_LOCAL_PATH}"  # Gunakan default jika input kosong
+
+    # Membuat direktori lokal jika belum ada
+    mkdir -p "$local_mount_point"
+    echo "Direktori $local_mount_point berhasil dibuat."
+
+    # Memberikan izin yang sesuai untuk folder lokal
+    chmod 755 "$local_mount_point"
+
+    # Melakukan mounting
     sshfs $username@$ip_address:$remote_folder $local_mount_point
+
+    # Memeriksa apakah mounting berhasil
+    if [ $? -eq 0 ]; then
+        echo "Folder dari perangkat 2 berhasil di-mount pada $local_mount_point."
+    else
+        echo "Gagal melakukan mounting folder dari perangkat 2."
+    fi
 }
 
 # Fungsi utama
@@ -40,8 +62,6 @@ main() {
     # Memulai mounting folder perangkat 2
     echo "Memulai mounting folder perangkat 2..."
     mount_remote_folder
-
-    echo "Folder dari perangkat 2 berhasil di-mount."
 }
 
 # Memanggil fungsi utama
